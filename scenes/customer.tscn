@@ -1,0 +1,108 @@
+[gd_scene load_steps=4 format=3 uid="uid://dn187v5rvb2cn"]
+
+[ext_resource type="Script" uid="uid://bou2u5mk14rh0" path="res://scripts/gameplay/customer.gd" id="1_customer"]
+[ext_resource type="Texture2D" uid="uid://xf4jf7clqole" path="res://assets/sprite/cat.png" id="2_cat"]
+[ext_resource type="Texture2D" uid="uid://crkrpbd6ocd1a" path="res://assets/ui/Speech_Bubble.png" id="3_bubble"]
+
+[node name="Customer" type="Control"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 200.0
+script = ExtResource("1_customer")
+
+[node name="CustomerSprite" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 35.0
+offset_top = 40.0
+offset_right = 165.0
+offset_bottom = 200.0
+mouse_filter = 2
+texture = ExtResource("2_cat")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Highlight" type="ColorRect" parent="."]
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = 35.0
+offset_top = 40.0
+offset_right = 165.0
+offset_bottom = 200.0
+mouse_filter = 2
+color = Color(0.45, 1, 0.55, 0.45)
+
+[node name="Bubble" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 30.0
+offset_top = -58.0
+offset_right = 170.0
+offset_bottom = 51.0
+mouse_filter = 2
+
+[node name="BubbleBackdrop" type="TextureRect" parent="Bubble"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_bubble")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Patience" type="TextureProgressBar" parent="Bubble"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 126.0
+offset_bottom = 22.0
+mouse_filter = 2
+max_value = 15.0
+value = 15.0
+
+[node name="BubbleItem" type="TextureRect" parent="Bubble"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 24.0
+offset_right = 98.0
+offset_bottom = 60.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="OrderLabel" type="Label" parent="Bubble"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 58.0
+offset_right = 132.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0.15, 0.2, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+text = "Sushi"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="RecipeLabel" type="Label" parent="Bubble"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 74.0
+offset_right = 130.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0.35, 0.42, 0.52, 1)
+theme_override_font_sizes/font_size = 9
+text = "Fridge -> Chop -> Plate"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ClickArea" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 192.0
+offset_bottom = 200.0
+color = Color(1, 1, 1, 0)

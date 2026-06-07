@@ -1,0 +1,9 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# OS / editor
+.DS_Store
+
+# Accidental nested repo stub
+Let Meow Cook/
