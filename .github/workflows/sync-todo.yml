@@ -1,0 +1,46 @@
+name: Sync TODO.md
+
+on:
+  pull_request:
+    types: [closed]
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  sync-todo:
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Mark tasks from merged PR
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: python .github/scripts/sync_todo.py --from-pr-body
+
+      - name: Mark tasks from commit messages
+        if: github.event_name == 'push'
+        run: python .github/scripts/sync_todo.py --from-commits "${{ github.event.before }}..${{ github.sha }}"
+
+      - name: Commit updated TODO.md
+        run: |
+          if git diff --quiet TODO.md; then
+            echo "TODO.md unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add TODO.md
+          git commit -m "chore: sync TODO.md from completed tasks"
+          git push

@@ -1,0 +1,51 @@
+name: Task (artist / dev / SFX)
+description: New task for Let Meow Cook
+title: "[TASK] "
+labels: ["task"]
+body:
+  - type: dropdown
+    id: role
+    attributes:
+      label: Role
+      options:
+        - Visual artist
+        - Dev
+        - SFX (Tal)
+        - Shared / design
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+        - Optional
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What needs to be done
+      placeholder: Clear outcome + file paths if art/audio
+    validations:
+      required: true
+
+  - type: input
+    id: todo_id
+    attributes:
+      label: TODO.md id (optional)
+      description: Slug matching a checkbox in TODO.md, e.g. currency-panel-ui — PR can auto-check it when merged
+      placeholder: currency-panel-ui
+
+  - type: checkboxes
+    id: also_update_todo
+    attributes:
+      label: Tracking
+      options:
+        - label: I will also check the box in TODO.md in my PR (or list the id under "TODO completed")
