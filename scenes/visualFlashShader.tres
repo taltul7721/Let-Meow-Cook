@@ -1,0 +1,23 @@
+[gd_resource type="VisualShader" load_steps=3 format=3 uid="uid://dvlnkyj7pt12k"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_bm21p"]
+output_port_for_preview = 0
+input_name = "texture"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_pkbwa"]
+source = 5
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+
+
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource("VisualShaderNodeInput_bm21p")
+nodes/fragment/2/position = Vector2(580, 180)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_pkbwa")
+nodes/fragment/3/position = Vector2(881.756, 293.738)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2)

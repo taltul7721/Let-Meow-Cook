@@ -531,6 +531,13 @@ func _refresh_guides() -> void:
 			plate_state,
 			_find_empty_plate_for(item_data) != null
 		)
+		%HintFlashAnimator.stop();
+		if (_hint_label.text.contains("bubble")):
+			%HintFlashAnimator.play("RESET");
+		elif (_hint_label.text.contains("fridge")):
+			%HintFlashAnimator.play("fridge_flash");
+			
+			
 
 
 func _get_active_customers() -> Array[Customer]:
@@ -568,3 +575,7 @@ func _any_customer_wants_grill() -> bool:
 
 func _get_active_customer() -> Customer:
 	return _get_focus_customer()
+
+
+func _on_fridge_area_pressed() -> void:
+	pass # Replace with function body.

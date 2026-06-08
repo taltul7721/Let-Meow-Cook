@@ -23,6 +23,7 @@ static func hint_for(
 		return _fridge_hint_for_order(order)
 
 	if not has_selection and fridge_bubble_open:
+		
 		return "Take the fish from the fridge bubble."
 
 	match selected_state:
