@@ -304,7 +304,7 @@ Naming: `sfx_<action>.ogg` — dev will wire in `KitchenFx` / stations.
 
 ### P0 — Core loop gaps
 
-- [ ] **Game over when timer hits 0:00**  
+- [x] **Game over when timer hits 0:00**  
   - `RunTimer` emits `time_expired` — hook screen, freeze input, show score
 
 - [ ] **Multi-item fridge** — all ingredients come from fridge  
