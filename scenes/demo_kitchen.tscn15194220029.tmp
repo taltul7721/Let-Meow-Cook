@@ -512,6 +512,7 @@ stretch_mode = 5
 
 [node name="CustomerLayer" type="Control" parent="."]
 unique_name_in_owner = true
+visible = false
 z_index = 5
 layout_mode = 1
 anchors_preset = 15
@@ -688,16 +689,22 @@ script = ExtResource("12_laser")
 beam = NodePath("../LaserBeam")
 warning_label = NodePath("../LaserWarning")
 
-[node name="RunTimer" type="Node" parent="." node_paths=PackedStringArray("timer_label")]
+[node name="RunTimer" type="Node" parent="."]
 script = ExtResource("13_timer")
 timer_label = NodePath("../TimerPanel/TimerValue")
 
-[node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent", "score_label")]
+[node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("score_label")]
 unique_name_in_owner = true
 script = ExtResource("6_spawner")
-spawn_parent = NodePath("../CustomerLayer")
+spawn_parent = null
 customer_scene = ExtResource("5_customer_scene")
-score_label = NodePath("../ScorePanel/ScoreValue")
+score_label = NodePath("../HintLabel")
+respawn_delay_min = null
+respawn_delay_max = null
+serve_points = null
+angry_penalty = null
+customer_count = null
+initial_spawn_delays = null
 
 [node name="HintFlashAnimator" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

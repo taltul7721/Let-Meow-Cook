@@ -4,7 +4,7 @@ extends Node
 signal time_expired
 
 @export var timer_label: Label
-@export var start_seconds: float = 120.0
+@export var start_seconds: float = 15
 
 var time_left: float = 0.0
 var _expired: bool = false

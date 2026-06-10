@@ -72,13 +72,9 @@ func receive_item(source: Node, item_data: Dictionary) -> void:
 	_stored_item_id = item_data.get("item_id", "")
 	_stored_item_state = item_data.get("item_state", "")
 	_occupied = true
-	set_highlighted(false)
 
-	var tex := FishAssets.for_state(_stored_item_state)
-	if tex == null and source is SelectableSource:
-		tex = (source as SelectableSource).texture_normal
+	var tex = (source as SelectableSource).texture_normal
 
-	_clear_placement_source(source)
 	_show_food_on_plate(tex)
 
 
@@ -149,7 +145,6 @@ func _on_pressed() -> void:
 func _show_food_on_plate(tex: Texture2D) -> void:
 	if food_visual == null or tex == null:
 		return
-	_ensure_outlines()
 	ItemDisplay.apply_sized_rect(food_visual, tex, plate_food_size)
 	food_visual.visible = true
 	food_visual.modulate = Color.WHITE

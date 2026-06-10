@@ -44,8 +44,9 @@ func select(source: Node) -> void:
 		return
 	if source == null or not source.has_method("get_item_data"):
 		return
-	if source is SelectableSource and source.has_method("is_occupied") and not source.is_occupied():
-		return
+	if source is SelectableSource and source.has_method("is_occupied"):
+		if not source.is_occupied():
+			return
 	if source is ServingPlate:
 		var plate := source as ServingPlate
 		if plate.is_respawning() or not plate.has_food():
@@ -55,18 +56,13 @@ func select(source: Node) -> void:
 		clear_selection()
 		return
 
-	if selected_source != null:
-		selected_source.set_highlighted(false)
-
 	selected_source = source
-	selected_source.set_highlighted(true)
 	selection_changed.emit(source)
 
 
 func clear_selection() -> void:
 	if selected_source == null:
 		return
-	selected_source.set_highlighted(false)
 	selected_source = null
 	selection_cleared.emit()
 
@@ -85,8 +81,8 @@ func try_place(destination: Node) -> bool:
 	var item_data: Dictionary = selected_source.get_item_data()
 	if not destination.can_accept(item_data):
 		placement_failed.emit(selected_source, destination, "invalid_item_for_slot")
-		if destination.has_method("flash_invalid"):
-			destination.flash_invalid()
+
+
 		return false
 
 	var source: Node = selected_source

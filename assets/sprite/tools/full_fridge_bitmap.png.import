@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://qvw8joekw3d8"
+path="res://.godot/imported/full_fridge_bitmap.png-fa079fdde8de27ec18afc3ff7c521c40.res"
+
+[deps]
+
+source_file="res://assets/sprite/tools/full_fridge_bitmap.png"
+dest_files=["res://.godot/imported/full_fridge_bitmap.png-fa079fdde8de27ec18afc3ff7c521c40.res"]
+
+[params]
+
+create_from=1
+threshold=0.5
