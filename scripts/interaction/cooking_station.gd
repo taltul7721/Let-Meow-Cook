@@ -3,8 +3,7 @@ extends PlaceDestination
 
 @export var cook_duration: float = 2.0
 @export var output_state: String = "cooked"
-@export var output_texture: Texture2D
-@export var cooking_display_texture: Texture2D
+@export var cooking_display_texture: AtlasTexture
 @export var processing_display_size: Vector2 = KitchenLayout.BOARD_PROCESSING_SIZE
 @export var pickup_display_size: Vector2 = KitchenLayout.STATION_PICKUP_SIZE
 @export var pickup_source: SelectableSource
@@ -28,8 +27,6 @@ func _ready() -> void:
 	_stored_item_id = ""
 	_stored_item_state = ""
 	_poof_played_midway = false
-	texture_normal = null
-	modulate = Color(1, 1, 1, 0.01)
 
 	if processing_visual:
 		processing_visual.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -56,7 +53,6 @@ func set_fx_parent(node: Node) -> void:
 func _setup_pickup_overlay() -> void:
 	if pickup_source == null:
 		return
-	pickup_source.prepare_empty_pickup()
 	pickup_source.z_index = 16
 
 
@@ -96,9 +92,8 @@ func _update_destination_hint() -> void:
 func receive_item(source: Node, item_data: Dictionary) -> void:
 	_stored_item_id = item_data.get("item_id", "")
 	_stored_item_state = item_data.get("item_state", "")
+	cooking_display_texture.region.position = owner.atlas_coordinates[_stored_item_id + " " + _stored_item_state]
 	_occupied = true
-	modulate = Color(1, 1, 1, 0.01)
-	_clear_placement_source(source)
 	_start_cooking(item_data)
 
 
@@ -110,7 +105,8 @@ func clear_slot() -> void:
 	_stored_item_id = ""
 	_stored_item_state = ""
 	_poof_played_midway = false
-	modulate = Color(1, 1, 1, 0.01)
+	modulate = Color(1, 1, 1, 0.00)
+	pickup_source.visible = false
 	_clear_processing_visual()
 	if progress_bar:
 		progress_bar.visible = false
@@ -143,8 +139,10 @@ func _finish_cooking() -> void:
 	_poof_played_midway = false
 
 	if pickup_source:
-		var tex := output_texture if output_texture else cooking_display_texture
-		pickup_source.refill_from_station(_stored_item_id, output_state, tex, pickup_display_size)
+		pickup_source.item_id = _stored_item_id
+		pickup_source.item_state = _stored_item_state
+		pickup_source.visible = true
+		pickup_source.occupied = true
 		ItemDisplay.center_on_control(pickup_source, self)
 		Juice.elastic_pop_in(pickup_source, KitchenLayout.JUICE_SPRING_DURATION)
 	else:
@@ -152,15 +150,8 @@ func _finish_cooking() -> void:
 
 
 func _show_processing_visual() -> void:
-	if processing_visual == null:
-		return
-	var tex := cooking_display_texture
-	if tex == null:
-		_clear_processing_visual()
-		return
-	ItemDisplay.apply_sized_rect(processing_visual, tex, processing_display_size)
+	ItemDisplay.apply_sized_rect(processing_visual, cooking_display_texture, processing_display_size)
 	ItemDisplay.center_on_control(processing_visual, self)
-	processing_visual.modulate = Color.WHITE
 	processing_visual.visible = true
 	Juice.elastic_pop_in(processing_visual, KitchenLayout.JUICE_SPRING_DURATION)
 	_layout_progress_bar()
@@ -174,8 +165,7 @@ func _layout_progress_bar() -> void:
 
 
 func _clear_processing_visual() -> void:
-	if processing_visual:
-		ItemDisplay.clear_rect(processing_visual)
+	processing_visual.visible = false
 
 
 func _sync_particle_position(particles: CPUParticles2D) -> void:

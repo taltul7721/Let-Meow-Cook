@@ -1,6 +1,6 @@
 extends Node
 
-@export var spawn_parent: NodePath = NodePath("../CustomerLayer")
+@export var spawn_parent : Node
 @export var customer_scene: PackedScene
 @export var score_label: Label
 @export var respawn_delay_min: float = 2.5
@@ -89,8 +89,8 @@ func _spawn_at_slot(slot: int) -> void:
 	customer.visible = true
 	customer.show()
 
-	customer.served_correct.connect(_on_served_correct.bind(slot), CONNECT_ONE_SHOT)
-	customer.left_angry.connect(_on_left_angry.bind(slot), CONNECT_ONE_SHOT)
+	customer.served_correct.connect(_on_served_correct, CONNECT_ONE_SHOT)
+	customer.left_angry.connect(_on_left_angry, CONNECT_ONE_SHOT)
 	customer.start(_pick_order())
 	_customers[slot] = customer
 	customer_spawned.emit(customer)
@@ -117,22 +117,7 @@ func _resolve_feet_position(slot: int) -> Vector2:
 
 
 func _resolve_spawn_parent() -> Node:
-	var kitchen := _get_demo_kitchen()
-	if kitchen:
-		if spawn_parent != NodePath(""):
-			var from_path := kitchen.get_node_or_null(spawn_parent)
-			if from_path:
-				return from_path
-		var layer := kitchen.get_node_or_null("CustomerLayer")
-		if layer:
-			return layer
-		return kitchen
-
-	if spawn_parent != NodePath(""):
-		var node := get_node_or_null(spawn_parent)
-		if node:
-			return node
-	return get_parent()
+	return spawn_parent
 
 
 func _get_demo_kitchen() -> Node:
@@ -177,10 +162,15 @@ func _random_respawn_delay() -> float:
 	return randf_range(min_delay, max_delay)
 
 
-func _on_served_correct(slot: int, _order_id: String) -> void:
+func _on_served_correct(_order_id: String) -> void:
 	score += serve_points
 	_update_score()
-	_customers[slot] = null
+	var slot : int = -1
+	for i in _customers.size():
+		if _customers[i] != null and _customers[i].order_id == _order_id:
+			_customers[i] = null
+			slot = i
+			break
 	await get_tree().create_timer(_random_respawn_delay()).timeout
 	if is_inside_tree():
 		_spawn_at_slot(slot)

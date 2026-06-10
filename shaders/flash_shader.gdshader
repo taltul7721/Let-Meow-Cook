@@ -9,6 +9,7 @@ void fragment() {
 	if (uv.x < bounds.x || uv.x > bounds.y || uv.y < bounds.z || uv.y > bounds.w) {
 		vec4 original_color = texture(TEXTURE, UV);
 		vec4 mixed = mix(original_color, flash_color, flash_percent / 2.0);
+		mixed.a = original_color.a;
 		COLOR = mixed;
 	} 
 }
