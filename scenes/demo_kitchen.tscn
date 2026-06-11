@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://p755bydgjbsq"]
+[gd_scene load_steps=38 format=3 uid="uid://p755bydgjbsq"]
 
 [ext_resource type="Script" uid="uid://c8u6qry7jssp8" path="res://scenes/demo_kitchen.gd" id="1_demo"]
 [ext_resource type="Script" uid="uid://bflga4qre5y4d" path="res://scripts/interaction/selectable_source.gd" id="2_source"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://dply02fl52166" path="res://scripts/gameplay/laser_hazard.gd" id="12_laser"]
 [ext_resource type="Script" uid="uid://6q25hbvfssx4" path="res://scripts/gameplay/run_timer.gd" id="13_timer"]
 [ext_resource type="Script" uid="uid://byvnwk781nbdc" path="res://scenes/button.gd" id="18_so1dg"]
+[ext_resource type="Script" uid="uid://4313rgwu0um5" path="res://scenes/button_2.gd" id="19_f2484"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_btev0"]
 shader = ExtResource("4_a5l1t")
@@ -99,7 +100,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("%FridgeFish:material:shader_parameter/flash_percent")
+tracks/1/path = NodePath("FridgeBubble/FridgeFish:material:shader_parameter/flash_percent")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -116,7 +117,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%FridgeFish:material:shader_parameter/flash_percent")
+tracks/0/path = NodePath("FridgeBubble/FridgeFish:material:shader_parameter/flash_percent")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -176,11 +177,14 @@ texture = ExtResource("7_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Fridge" type="Node" parent="."]
+[node name="Interactables" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Fridge" type="Node" parent="Interactables"]
 unique_name_in_owner = true
 script = ExtResource("3_dmjcl")
 
-[node name="FridgeTexture" type="TextureButton" parent="Fridge"]
+[node name="FridgeTexture" type="TextureButton" parent="Interactables/Fridge"]
 material = SubResource("ShaderMaterial_btev0")
 offset_left = 13.0
 offset_top = 386.0
@@ -191,7 +195,7 @@ texture_click_mask = ExtResource("7_dmjcl")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="FridgeHint" type="Label" parent="Fridge"]
+[node name="FridgeHint" type="Label" parent="Interactables/Fridge"]
 unique_name_in_owner = true
 visible = false
 z_index = 23
@@ -207,7 +211,7 @@ theme_override_font_sizes/font_size = 17
 text = "Tap fridge"
 horizontal_alignment = 1
 
-[node name="FridgeBubble" type="Panel" parent="Fridge"]
+[node name="FridgeBubble" type="Panel" parent="Interactables/Fridge"]
 unique_name_in_owner = true
 visible = false
 z_index = 22
@@ -218,7 +222,7 @@ offset_bottom = 368.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
 
-[node name="FridgeFish" type="TextureButton" parent="Fridge/FridgeBubble"]
+[node name="FridgeFish" type="TextureButton" parent="Interactables/Fridge/FridgeBubble"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_dmjcl")
 layout_mode = 0
@@ -233,9 +237,9 @@ item_state = "raw"
 occupied = true
 flash_animation = "fridge_bubble_flash"
 
-[node name="Grill" type="Node" parent="."]
+[node name="Grill" type="Node" parent="Interactables"]
 
-[node name="GrillDrop" type="TextureButton" parent="Grill" node_paths=PackedStringArray("pickup_source", "progress_bar", "processing_visual", "sizzle_particles")]
+[node name="GrillDrop" type="TextureButton" parent="Interactables/Grill" node_paths=PackedStringArray("pickup_source", "progress_bar", "processing_visual", "sizzle_particles")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 z_index = 5
@@ -254,7 +258,7 @@ progress_bar = NodePath("../GrillProgress")
 processing_visual = NodePath("../GrillProcessingVisual")
 sizzle_particles = NodePath("../SizzleParticles")
 
-[node name="GrillGhostGuide" type="TextureRect" parent="Grill"]
+[node name="GrillGhostGuide" type="TextureRect" parent="Interactables/Grill"]
 unique_name_in_owner = true
 visible = false
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -268,7 +272,7 @@ texture = SubResource("AtlasTexture_f2484")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="SizzleParticles" type="CPUParticles2D" parent="Grill"]
+[node name="SizzleParticles" type="CPUParticles2D" parent="Interactables/Grill"]
 unique_name_in_owner = true
 z_index = 20
 position = Vector2(580, 478)
@@ -281,7 +285,7 @@ gravity = Vector2(0, -50)
 initial_velocity_min = 8.0
 initial_velocity_max = 28.0
 
-[node name="GrillProcessingVisual" type="TextureRect" parent="Grill"]
+[node name="GrillProcessingVisual" type="TextureRect" parent="Interactables/Grill"]
 unique_name_in_owner = true
 visible = false
 z_index = 15
@@ -292,7 +296,7 @@ offset_bottom = 511.0
 mouse_filter = 2
 stretch_mode = 5
 
-[node name="GrillProgress" type="TextureProgressBar" parent="Grill"]
+[node name="GrillProgress" type="TextureProgressBar" parent="Interactables/Grill"]
 unique_name_in_owner = true
 visible = false
 z_index = 25
@@ -303,7 +307,7 @@ offset_bottom = 378.0
 mouse_filter = 2
 max_value = 1.0
 
-[node name="CookedPickup" type="TextureButton" parent="Grill"]
+[node name="CookedPickup" type="TextureButton" parent="Interactables/Grill"]
 unique_name_in_owner = true
 visible = false
 z_index = 16
@@ -318,9 +322,9 @@ script = ExtResource("2_source")
 item_id = "fish"
 item_state = "cooked"
 
-[node name="CuttingBoard" type="Node" parent="."]
+[node name="CuttingBoard" type="Node" parent="Interactables"]
 
-[node name="BoardDrop" type="TextureButton" parent="CuttingBoard" node_paths=PackedStringArray("pickup_source", "progress_bar", "processing_visual", "chop_particles")]
+[node name="BoardDrop" type="TextureButton" parent="Interactables/CuttingBoard" node_paths=PackedStringArray("pickup_source", "progress_bar", "processing_visual", "chop_particles")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 z_index = 5
@@ -340,7 +344,7 @@ progress_bar = NodePath("../BoardProgress")
 processing_visual = NodePath("../BoardProcessingVisual")
 chop_particles = NodePath("../ChopParticles")
 
-[node name="ChopParticles" type="CPUParticles2D" parent="CuttingBoard"]
+[node name="ChopParticles" type="CPUParticles2D" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
 z_index = 20
 position = Vector2(335, 493)
@@ -355,7 +359,7 @@ gravity = Vector2(0, -120)
 initial_velocity_min = 50.0
 initial_velocity_max = 110.0
 
-[node name="BoardGhostGuide" type="TextureRect" parent="CuttingBoard"]
+[node name="BoardGhostGuide" type="TextureRect" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
 visible = false
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -369,7 +373,7 @@ texture = SubResource("AtlasTexture_btev0")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BoardProcessingVisual" type="TextureRect" parent="CuttingBoard"]
+[node name="BoardProcessingVisual" type="TextureRect" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
 visible = false
 z_index = 15
@@ -380,7 +384,7 @@ offset_bottom = 529.0
 mouse_filter = 2
 stretch_mode = 5
 
-[node name="BoardProgress" type="TextureProgressBar" parent="CuttingBoard"]
+[node name="BoardProgress" type="TextureProgressBar" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
 visible = false
 z_index = 25
@@ -391,7 +395,7 @@ offset_bottom = 386.0
 mouse_filter = 2
 max_value = 1.0
 
-[node name="CutPickup" type="TextureButton" parent="CuttingBoard"]
+[node name="CutPickup" type="TextureButton" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
 visible = false
 z_index = 16
@@ -406,10 +410,10 @@ script = ExtResource("2_source")
 item_id = "fish"
 item_state = "cut"
 
-[node name="Plate" type="Node2D" parent="."]
+[node name="Plate" type="Node2D" parent="Interactables"]
 position = Vector2(-46, -10)
 
-[node name="PlateVisual" type="TextureRect" parent="Plate"]
+[node name="PlateVisual" type="TextureRect" parent="Interactables/Plate"]
 unique_name_in_owner = true
 z_index = 11
 offset_left = 772.0
@@ -422,7 +426,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Plate1" type="TextureButton" parent="Plate" node_paths=PackedStringArray("plate_visual", "food_visual")]
+[node name="Plate1" type="TextureButton" parent="Interactables/Plate" node_paths=PackedStringArray("plate_visual", "food_visual")]
 unique_name_in_owner = true
 z_index = 12
 offset_left = 772.0
@@ -434,7 +438,7 @@ plate_visual = NodePath("../PlateVisual")
 food_visual = NodePath("../FoodVisual")
 metadata/_edit_use_anchors_ = true
 
-[node name="FoodVisual" type="TextureRect" parent="Plate"]
+[node name="FoodVisual" type="TextureRect" parent="Interactables/Plate"]
 unique_name_in_owner = true
 visible = false
 z_index = 13
@@ -445,7 +449,7 @@ offset_bottom = 523.0
 mouse_filter = 2
 stretch_mode = 5
 
-[node name="PlateGhostGuide" type="TextureRect" parent="Plate"]
+[node name="PlateGhostGuide" type="TextureRect" parent="Interactables/Plate"]
 unique_name_in_owner = true
 visible = false
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -459,10 +463,10 @@ texture = SubResource("AtlasTexture_so1dg")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plate 2" type="Node2D" parent="."]
+[node name="Plate 2" type="Node2D" parent="Interactables"]
 position = Vector2(-68, -11)
 
-[node name="PlateVisual2" type="TextureRect" parent="Plate 2"]
+[node name="PlateVisual2" type="TextureRect" parent="Interactables/Plate 2"]
 unique_name_in_owner = true
 z_index = 11
 offset_left = 898.0
@@ -474,7 +478,7 @@ texture = ExtResource("8_plate_tex")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plate2" type="TextureButton" parent="Plate 2" node_paths=PackedStringArray("plate_visual", "food_visual")]
+[node name="Plate2" type="TextureButton" parent="Interactables/Plate 2" node_paths=PackedStringArray("plate_visual", "food_visual")]
 unique_name_in_owner = true
 z_index = 12
 offset_left = 898.0
@@ -485,7 +489,7 @@ script = ExtResource("4_plate_script")
 plate_visual = NodePath("../PlateVisual2")
 food_visual = NodePath("../FoodVisual2")
 
-[node name="PlateGhostGuide2" type="TextureRect" parent="Plate 2"]
+[node name="PlateGhostGuide2" type="TextureRect" parent="Interactables/Plate 2"]
 unique_name_in_owner = true
 visible = false
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -499,7 +503,7 @@ texture = SubResource("AtlasTexture_iksnw")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="FoodVisual2" type="TextureRect" parent="Plate 2"]
+[node name="FoodVisual2" type="TextureRect" parent="Interactables/Plate 2"]
 unique_name_in_owner = true
 visible = false
 z_index = 13
@@ -683,14 +687,14 @@ offset_bottom = 668.0
 mouse_filter = 2
 color = Color(1, 0.25, 0.35, 0.82)
 
-[node name="LaserHazard" type="Node" parent="."]
+[node name="LaserHazard" type="Node" parent="." node_paths=PackedStringArray("beam")]
 script = ExtResource("12_laser")
 beam = NodePath("../LaserBeam")
-warning_label = NodePath("../LaserWarning")
 
 [node name="RunTimer" type="Node" parent="." node_paths=PackedStringArray("timer_label")]
 script = ExtResource("13_timer")
 timer_label = NodePath("../TimerPanel/TimerValue")
+start_seconds = 120.0
 
 [node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent", "score_label")]
 unique_name_in_owner = true
@@ -701,7 +705,7 @@ score_label = NodePath("../ScorePanel/ScoreValue")
 
 [node name="HintFlashAnimator" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
-root_node = NodePath("../Fridge")
+root_node = NodePath("../../../../../../../../../../../../../../../../../../../../../../Node/Fridge")
 libraries = {
 &"": SubResource("AnimationLibrary_dmjcl")
 }
@@ -715,15 +719,25 @@ offset_bottom = 174.0
 text = "summon customer"
 script = ExtResource("18_so1dg")
 
-[connection signal="ready" from="Fridge" to="Fridge" method="_on_ready"]
-[connection signal="pressed" from="Fridge/FridgeTexture" to="Fridge" method="_on_fridge_pressed"]
-[connection signal="visibility_changed" from="Fridge/FridgeHint" to="Fridge" method="_on_fridge_hint_visibility_changed"]
-[connection signal="visibility_changed" from="Fridge/FridgeBubble" to="Fridge/FridgeBubble/FridgeFish" method="_on_visibility_changed"]
-[connection signal="pressed" from="Fridge/FridgeBubble/FridgeFish" to="Fridge/FridgeBubble/FridgeFish" method="_on_pressed"]
-[connection signal="pressed" from="Grill/CookedPickup" to="Grill/CookedPickup" method="_on_pressed"]
-[connection signal="visibility_changed" from="Grill/CookedPickup" to="Grill/CookedPickup" method="_on_visibility_changed"]
-[connection signal="pressed" from="CuttingBoard/CutPickup" to="CuttingBoard/CutPickup" method="_on_pressed"]
-[connection signal="visibility_changed" from="CuttingBoard/CutPickup" to="CuttingBoard/CutPickup" method="_on_visibility_changed"]
-[connection signal="pressed" from="Plate/Plate1" to="Plate/Plate1" method="_on_pressed"]
-[connection signal="pressed" from="Plate 2/Plate2" to="Plate 2/Plate2" method="_on_pressed"]
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 172.0
+offset_right = 190.0
+offset_bottom = 236.0
+text = "activate laser"
+script = ExtResource("19_f2484")
+
+[connection signal="ready" from="Interactables/Fridge" to="Interactables/Fridge" method="_on_ready"]
+[connection signal="pressed" from="Interactables/Fridge/FridgeTexture" to="Interactables/Fridge" method="_on_fridge_pressed"]
+[connection signal="visibility_changed" from="Interactables/Fridge/FridgeHint" to="Interactables/Fridge" method="_on_fridge_hint_visibility_changed"]
+[connection signal="visibility_changed" from="Interactables/Fridge/FridgeBubble" to="Interactables/Fridge/FridgeBubble/FridgeFish" method="_on_visibility_changed"]
+[connection signal="pressed" from="Interactables/Fridge/FridgeBubble/FridgeFish" to="Interactables/Fridge/FridgeBubble/FridgeFish" method="_on_pressed"]
+[connection signal="pressed" from="Interactables/Grill/CookedPickup" to="Interactables/Grill/CookedPickup" method="_on_pressed"]
+[connection signal="visibility_changed" from="Interactables/Grill/CookedPickup" to="Interactables/Grill/CookedPickup" method="_on_visibility_changed"]
+[connection signal="pressed" from="Interactables/CuttingBoard/CutPickup" to="Interactables/CuttingBoard/CutPickup" method="_on_pressed"]
+[connection signal="visibility_changed" from="Interactables/CuttingBoard/CutPickup" to="Interactables/CuttingBoard/CutPickup" method="_on_visibility_changed"]
+[connection signal="pressed" from="Interactables/Plate/Plate1" to="Interactables/Plate/Plate1" method="_on_pressed"]
+[connection signal="pressed" from="Interactables/Plate 2/Plate2" to="Interactables/Plate 2/Plate2" method="_on_pressed"]
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
+[connection signal="pressed" from="Button2" to="Button2" method="_on_pressed"]

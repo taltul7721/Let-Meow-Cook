@@ -40,7 +40,8 @@ func _run_laser() -> void:
 	if warning_label:
 		warning_label.visible = true
 
-	GameManager.set_input_locked(true)
+	#GameManager.set_input_locked(true)
+	%Interactables.process_mode = Node.PROCESS_MODE_DISABLED
 	await get_tree().create_timer(warning_seconds).timeout
 
 	var viewport_h := KitchenLayout.VIEWPORT_SIZE.y
@@ -63,6 +64,7 @@ func _run_laser() -> void:
 	if warning_label:
 		warning_label.visible = false
 
-	GameManager.set_input_locked(false)
+	#GameManager.set_input_locked(false)
+	%Interactables.process_mode = Node.PROCESS_MODE_INHERIT
 	_running = false
 	laser_finished.emit()
