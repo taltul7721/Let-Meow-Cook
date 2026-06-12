@@ -5,6 +5,7 @@ extends TextureButton
 @export var item_state: String
 @export var occupied : bool;
 @export var flash_animation : String
+@export var sfx : AudioStreamPlayer2D
 
 func _ready() -> void:
 	GameManager.placement_succeeded.connect(on_placement)
@@ -19,7 +20,7 @@ func _on_visibility_changed() -> void:
 func _on_pressed() -> void:
 	GameManager.select(self)
 	%HintFlashAnimator.stop()
-
+	sfx.play()
 func get_item_data() -> Dictionary:
 	return {"item_id": item_id, "item_state": item_state}
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://p755bydgjbsq"]
+[gd_scene load_steps=41 format=3 uid="uid://p755bydgjbsq"]
 
 [ext_resource type="Script" uid="uid://c8u6qry7jssp8" path="res://scenes/demo_kitchen.gd" id="1_demo"]
 [ext_resource type="Script" uid="uid://bflga4qre5y4d" path="res://scripts/interaction/selectable_source.gd" id="2_source"]
@@ -19,6 +19,9 @@
 [ext_resource type="Script" uid="uid://6q25hbvfssx4" path="res://scripts/gameplay/run_timer.gd" id="13_timer"]
 [ext_resource type="Script" uid="uid://byvnwk781nbdc" path="res://scenes/button.gd" id="18_so1dg"]
 [ext_resource type="Script" uid="uid://4313rgwu0um5" path="res://scenes/button_2.gd" id="19_f2484"]
+[ext_resource type="AudioStream" uid="uid://mkp65e3nvm0r" path="res://sounds/sfx/Click.ogg" id="20_23ual"]
+[ext_resource type="AudioStream" uid="uid://i2g0w4hj3vsu" path="res://sounds/sfx/Knife.ogg" id="21_gtyqg"]
+[ext_resource type="AudioStream" uid="uid://d3kypj42llmco" path="res://sounds/sfx/Plate.ogg" id="22_gtyqg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_btev0"]
 shader = ExtResource("4_a5l1t")
@@ -395,7 +398,7 @@ offset_bottom = 386.0
 mouse_filter = 2
 max_value = 1.0
 
-[node name="CutPickup" type="TextureButton" parent="Interactables/CuttingBoard"]
+[node name="CutPickup" type="TextureButton" parent="Interactables/CuttingBoard" node_paths=PackedStringArray("sfx")]
 unique_name_in_owner = true
 visible = false
 z_index = 16
@@ -409,6 +412,7 @@ stretch_mode = 5
 script = ExtResource("2_source")
 item_id = "fish"
 item_state = "cut"
+sfx = NodePath("../../../SFX/Knife")
 
 [node name="Plate" type="Node2D" parent="Interactables"]
 position = Vector2(-46, -10)
@@ -727,6 +731,17 @@ offset_right = 190.0
 offset_bottom = 236.0
 text = "activate laser"
 script = ExtResource("19_f2484")
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="Click" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("20_23ual")
+
+[node name="Knife" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("21_gtyqg")
+
+[node name="Plate" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("22_gtyqg")
 
 [connection signal="ready" from="Interactables/Fridge" to="Interactables/Fridge" method="_on_ready"]
 [connection signal="pressed" from="Interactables/Fridge/FridgeTexture" to="Interactables/Fridge" method="_on_fridge_pressed"]

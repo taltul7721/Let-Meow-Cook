@@ -7,6 +7,7 @@ extends PlaceDestination
 @export var plate_food_size: Vector2 = KitchenLayout.PLATE_FOOD_SIZE
 @export var plate_food_y_offset: float = KitchenLayout.PLATE_FOOD_Y_OFFSET
 @export var plate_respawn_delay: float = 1.5
+@export var sfx : AudioStreamPlayer2D
 
 const HIGHLIGHT_SELECT := Color(1.4, 1.35, 0.7, 1.0)
 
@@ -140,7 +141,7 @@ func _on_pressed() -> void:
 		return
 	if has_food():
 		GameManager.select(self)
-
+	sfx.play()
 
 func _show_food_on_plate(tex: Texture2D) -> void:
 	if food_visual == null or tex == null:
