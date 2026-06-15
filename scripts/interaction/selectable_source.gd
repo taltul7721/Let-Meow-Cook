@@ -6,6 +6,8 @@ extends TextureButton
 @export var occupied : bool;
 @export var flash_animation : String
 @export var sfx : AudioStreamPlayer2D
+@export var open_sfx : AudioStreamPlayer2D
+@export var close_sfx : AudioStreamPlayer2D
 
 func _ready() -> void:
 	GameManager.placement_succeeded.connect(on_placement)
@@ -15,12 +17,16 @@ func _on_visibility_changed() -> void:
 		(texture_normal as AtlasTexture).region.position = owner.atlas_coordinates[item_id + " " + item_state]
 		%HintFlashAnimator.stop()
 		%HintFlashAnimator.play(flash_animation)
+		open_sfx.play()
+	else:
+		close_sfx.play()
 
 
 func _on_pressed() -> void:
 	GameManager.select(self)
 	%HintFlashAnimator.stop()
-	sfx.play()
+	if sfx:
+		sfx.play()
 func get_item_data() -> Dictionary:
 	return {"item_id": item_id, "item_state": item_state}
 	

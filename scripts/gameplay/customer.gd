@@ -4,6 +4,7 @@ extends Control
 
 signal served_correct(order_id: String)
 signal left_angry(order_id: String)
+signal served_wrong(order_id: String)
 
 @export var patience_seconds: float = 15.0
 @export var bubble_panel: Control
@@ -136,6 +137,7 @@ func receive_item(source: Node, item_data: Dictionary) -> void:
 		return
 	if not _matches_order(item_data):
 		flash_invalid()
+		served_wrong.emit(order_id)
 		return
 	await _play_serve_celebration()
 	if source is ServingPlate:

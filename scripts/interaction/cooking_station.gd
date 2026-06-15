@@ -6,12 +6,13 @@ extends PlaceDestination
 @export var cooking_display_texture: AtlasTexture
 @export var processing_display_size: Vector2 = KitchenLayout.BOARD_PROCESSING_SIZE
 @export var pickup_display_size: Vector2 = KitchenLayout.STATION_PICKUP_SIZE
-@export var pickup_source: SelectableSource
+@export var pickup_destination: SelectableSource
 @export var progress_bar: TextureProgressBar
 @export var processing_visual: TextureRect
 @export var chop_particles: CPUParticles2D
 @export var sizzle_particles: CPUParticles2D
 @export var use_chop_poof: bool = false
+@export var sfx : AudioStreamPlayer2D
 
 var _cooking: bool = false
 var _cook_time_left: float = 0.0
@@ -51,9 +52,9 @@ func set_fx_parent(node: Node) -> void:
 
 
 func _setup_pickup_overlay() -> void:
-	if pickup_source == null:
+	if pickup_destination == null:
 		return
-	pickup_source.z_index = 16
+	pickup_destination.z_index = 16
 
 
 func _process(delta: float) -> void:
@@ -72,7 +73,7 @@ func _process(delta: float) -> void:
 func can_accept(item_data: Dictionary) -> bool:
 	if _cooking:
 		return false
-	if pickup_source and pickup_source.is_occupied():
+	if pickup_destination and pickup_destination.is_occupied():
 		return false
 	return super.can_accept(item_data)
 
@@ -106,7 +107,7 @@ func clear_slot() -> void:
 	_stored_item_state = ""
 	_poof_played_midway = false
 	modulate = Color(1, 1, 1, 0.00)
-	pickup_source.visible = false
+	pickup_destination.visible = false
 	_clear_processing_visual()
 	if progress_bar:
 		progress_bar.visible = false
@@ -117,8 +118,8 @@ func _start_cooking(_item_data: Dictionary) -> void:
 	_cooking = true
 	_cook_time_left = cook_duration
 	_poof_played_midway = false
-	if pickup_source:
-		pickup_source.visible = false
+	if pickup_destination:
+		pickup_destination.visible = false
 	_show_processing_visual()
 	_update_progress()
 	_burst_chop_particles()
@@ -138,13 +139,13 @@ func _finish_cooking() -> void:
 	_update_progress()
 	_poof_played_midway = false
 
-	if pickup_source:
-		pickup_source.item_id = _stored_item_id
-		pickup_source.item_state = _stored_item_state
-		pickup_source.visible = true
-		pickup_source.occupied = true
-		ItemDisplay.center_on_control(pickup_source, self)
-		Juice.elastic_pop_in(pickup_source, KitchenLayout.JUICE_SPRING_DURATION)
+	if pickup_destination:
+		pickup_destination.item_id = _stored_item_id
+		pickup_destination.item_state = _stored_item_state
+		pickup_destination.visible = true
+		pickup_destination.occupied = true
+		ItemDisplay.center_on_control(pickup_destination, self)
+		Juice.elastic_pop_in(pickup_destination, KitchenLayout.JUICE_SPRING_DURATION)
 	else:
 		clear_slot()
 
@@ -218,6 +219,8 @@ func _update_progress() -> void:
 
 
 func _on_placement_succeeded(source: Node, _destination: Node) -> void:
-	if pickup_source == null or source != pickup_source:
+	if _destination == self:
+		sfx.play()
+	if pickup_destination == null or source != pickup_destination:
 		return
 	clear_slot()

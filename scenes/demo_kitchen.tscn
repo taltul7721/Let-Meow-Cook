@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://p755bydgjbsq"]
+[gd_scene load_steps=49 format=3 uid="uid://p755bydgjbsq"]
 
 [ext_resource type="Script" uid="uid://c8u6qry7jssp8" path="res://scenes/demo_kitchen.gd" id="1_demo"]
 [ext_resource type="Script" uid="uid://bflga4qre5y4d" path="res://scripts/interaction/selectable_source.gd" id="2_source"]
@@ -22,6 +22,14 @@
 [ext_resource type="AudioStream" uid="uid://mkp65e3nvm0r" path="res://sounds/sfx/Click.ogg" id="20_23ual"]
 [ext_resource type="AudioStream" uid="uid://i2g0w4hj3vsu" path="res://sounds/sfx/Knife.ogg" id="21_gtyqg"]
 [ext_resource type="AudioStream" uid="uid://d3kypj42llmco" path="res://sounds/sfx/Plate.ogg" id="22_gtyqg"]
+[ext_resource type="AudioStream" uid="uid://p0ojsaledh3v" path="res://sounds/sfx/Served.ogg" id="23_08h6m"]
+[ext_resource type="AudioStream" uid="uid://c1g6pb4ngy6gx" path="res://sounds/sfx/Wrong.ogg" id="24_e6o3j"]
+[ext_resource type="AudioStream" uid="uid://6pabgckn7get" path="res://sounds/sfx/Grill.ogg" id="25_oaa4x"]
+[ext_resource type="AudioStream" uid="uid://ofkumilbujo8" path="res://sounds/sfx/Fridge_Open.ogg" id="26_o1fvq"]
+[ext_resource type="AudioStream" uid="uid://cxbpa50j7y1v8" path="res://sounds/sfx/Fridge_Close.ogg" id="27_x2gjy"]
+[ext_resource type="AudioStream" uid="uid://d04phqtcja87d" path="res://sounds/sfx/customer_enter.ogg" id="28_t2cf2"]
+[ext_resource type="AudioStream" uid="uid://cmd0jo5bcxmj0" path="res://sounds/sfx/Complete.ogg" id="29_3e6cg"]
+[ext_resource type="AudioStream" uid="uid://cnhoidl2lsq5c" path="res://sounds/sfx/Fish.ogg" id="30_e6o3j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_btev0"]
 shader = ExtResource("4_a5l1t")
@@ -225,7 +233,7 @@ offset_bottom = 368.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
 
-[node name="FridgeFish" type="TextureButton" parent="Interactables/Fridge/FridgeBubble"]
+[node name="FridgeFish" type="TextureButton" parent="Interactables/Fridge/FridgeBubble" node_paths=PackedStringArray("sfx", "open_sfx", "close_sfx")]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_dmjcl")
 layout_mode = 0
@@ -239,10 +247,13 @@ item_id = "fish"
 item_state = "raw"
 occupied = true
 flash_animation = "fridge_bubble_flash"
+sfx = NodePath("../../../../SFX/FishSelected")
+open_sfx = NodePath("../../../../SFX/FridgeOpen")
+close_sfx = NodePath("../../../../SFX/FridgeClose")
 
 [node name="Grill" type="Node" parent="Interactables"]
 
-[node name="GrillDrop" type="TextureButton" parent="Interactables/Grill" node_paths=PackedStringArray("pickup_source", "progress_bar", "processing_visual", "sizzle_particles")]
+[node name="GrillDrop" type="TextureButton" parent="Interactables/Grill" node_paths=PackedStringArray("pickup_destination", "progress_bar", "processing_visual", "sizzle_particles", "sfx")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 z_index = 5
@@ -256,10 +267,11 @@ stretch_mode = 5
 script = ExtResource("3_cook")
 cook_duration = 2.5
 cooking_display_texture = SubResource("AtlasTexture_2m5cj")
-pickup_source = NodePath("../CookedPickup")
+pickup_destination = NodePath("../CookedPickup")
 progress_bar = NodePath("../GrillProgress")
 processing_visual = NodePath("../GrillProcessingVisual")
 sizzle_particles = NodePath("../SizzleParticles")
+sfx = NodePath("../../../SFX/Grilling")
 
 [node name="GrillGhostGuide" type="TextureRect" parent="Interactables/Grill"]
 unique_name_in_owner = true
@@ -327,7 +339,7 @@ item_state = "cooked"
 
 [node name="CuttingBoard" type="Node" parent="Interactables"]
 
-[node name="BoardDrop" type="TextureButton" parent="Interactables/CuttingBoard" node_paths=PackedStringArray("pickup_source", "progress_bar", "processing_visual", "chop_particles")]
+[node name="BoardDrop" type="TextureButton" parent="Interactables/CuttingBoard" node_paths=PackedStringArray("pickup_destination", "progress_bar", "processing_visual", "chop_particles", "sfx")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 z_index = 5
@@ -342,10 +354,11 @@ script = ExtResource("3_cook")
 cook_duration = 0.8
 output_state = "cut"
 cooking_display_texture = SubResource("AtlasTexture_fwl2g")
-pickup_source = NodePath("../CutPickup")
+pickup_destination = NodePath("../CutPickup")
 progress_bar = NodePath("../BoardProgress")
 processing_visual = NodePath("../BoardProcessingVisual")
 chop_particles = NodePath("../ChopParticles")
+sfx = NodePath("../../../SFX/Knife")
 
 [node name="ChopParticles" type="CPUParticles2D" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
@@ -398,7 +411,7 @@ offset_bottom = 386.0
 mouse_filter = 2
 max_value = 1.0
 
-[node name="CutPickup" type="TextureButton" parent="Interactables/CuttingBoard" node_paths=PackedStringArray("sfx")]
+[node name="CutPickup" type="TextureButton" parent="Interactables/CuttingBoard"]
 unique_name_in_owner = true
 visible = false
 z_index = 16
@@ -412,7 +425,6 @@ stretch_mode = 5
 script = ExtResource("2_source")
 item_id = "fish"
 item_state = "cut"
-sfx = NodePath("../../../SFX/Knife")
 
 [node name="Plate" type="Node2D" parent="Interactables"]
 position = Vector2(-46, -10)
@@ -430,7 +442,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Plate1" type="TextureButton" parent="Interactables/Plate" node_paths=PackedStringArray("plate_visual", "food_visual")]
+[node name="Plate1" type="TextureButton" parent="Interactables/Plate" node_paths=PackedStringArray("plate_visual", "food_visual", "sfx")]
 unique_name_in_owner = true
 z_index = 12
 offset_left = 772.0
@@ -440,6 +452,7 @@ offset_bottom = 538.0
 script = ExtResource("4_plate_script")
 plate_visual = NodePath("../PlateVisual")
 food_visual = NodePath("../FoodVisual")
+sfx = NodePath("../../../SFX/Plate")
 metadata/_edit_use_anchors_ = true
 
 [node name="FoodVisual" type="TextureRect" parent="Interactables/Plate"]
@@ -482,7 +495,7 @@ texture = ExtResource("8_plate_tex")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plate2" type="TextureButton" parent="Interactables/Plate 2" node_paths=PackedStringArray("plate_visual", "food_visual")]
+[node name="Plate2" type="TextureButton" parent="Interactables/Plate 2" node_paths=PackedStringArray("plate_visual", "food_visual", "sfx")]
 unique_name_in_owner = true
 z_index = 12
 offset_left = 898.0
@@ -492,6 +505,7 @@ offset_bottom = 538.0
 script = ExtResource("4_plate_script")
 plate_visual = NodePath("../PlateVisual2")
 food_visual = NodePath("../FoodVisual2")
+sfx = NodePath("../../../SFX/Plate")
 
 [node name="PlateGhostGuide2" type="TextureRect" parent="Interactables/Plate 2"]
 unique_name_in_owner = true
@@ -700,12 +714,15 @@ script = ExtResource("13_timer")
 timer_label = NodePath("../TimerPanel/TimerValue")
 start_seconds = 120.0
 
-[node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent", "score_label")]
+[node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent", "score_label", "correct_order_sfx", "wrong_order_sfx", "enter_sfx")]
 unique_name_in_owner = true
 script = ExtResource("6_spawner")
 spawn_parent = NodePath("../CustomerLayer")
 customer_scene = ExtResource("5_customer_scene")
 score_label = NodePath("../ScorePanel/ScoreValue")
+correct_order_sfx = NodePath("../SFX/CustomerCorrectOrder")
+wrong_order_sfx = NodePath("../SFX/CustomerWrongOrder")
+enter_sfx = NodePath("../SFX/Enter")
 
 [node name="HintFlashAnimator" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
@@ -742,6 +759,30 @@ stream = ExtResource("21_gtyqg")
 
 [node name="Plate" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("22_gtyqg")
+
+[node name="CustomerCorrectOrder" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("23_08h6m")
+
+[node name="CustomerWrongOrder" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("24_e6o3j")
+
+[node name="Grilling" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("25_oaa4x")
+
+[node name="FridgeOpen" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("26_o1fvq")
+
+[node name="FridgeClose" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("27_x2gjy")
+
+[node name="Enter" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("28_t2cf2")
+
+[node name="Leave" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("29_3e6cg")
+
+[node name="FishSelected" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("30_e6o3j")
 
 [connection signal="ready" from="Interactables/Fridge" to="Interactables/Fridge" method="_on_ready"]
 [connection signal="pressed" from="Interactables/Fridge/FridgeTexture" to="Interactables/Fridge" method="_on_fridge_pressed"]

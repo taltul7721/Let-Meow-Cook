@@ -9,6 +9,9 @@ extends Node
 @export var angry_penalty: int = 5
 @export var customer_count: int = 3
 @export var initial_spawn_delays: Array[float] = [0.0, 4.0, 9.0]
+@export var correct_order_sfx : AudioStreamPlayer2D
+@export var wrong_order_sfx : AudioStreamPlayer2D
+@export var enter_sfx : AudioStreamPlayer2D
 
 const STAND_NAMES := ["CustomerStand1", "CustomerStand2", "CustomerStand3"]
 const ORDER_OPTIONS := ["sushi", "cooked_fish"]
@@ -90,6 +93,7 @@ func _spawn_at_slot(slot: int) -> void:
 	customer.show()
 
 	customer.served_correct.connect(_on_served_correct, CONNECT_ONE_SHOT)
+	customer.served_wrong.connect(_on_served_wrong, CONNECT_ONE_SHOT)
 	customer.left_angry.connect(_on_left_angry, CONNECT_ONE_SHOT)
 	customer.start(_pick_order())
 	_customers[slot] = customer
@@ -164,6 +168,7 @@ func _random_respawn_delay() -> float:
 
 func _on_served_correct(_order_id: String) -> void:
 	score += serve_points
+	correct_order_sfx.play()
 	_update_score()
 	var slot : int = -1
 	for i in _customers.size():
@@ -175,7 +180,9 @@ func _on_served_correct(_order_id: String) -> void:
 	if is_inside_tree():
 		_spawn_at_slot(slot)
 
-
+func _on_served_wrong(_order_id : String) -> void:
+	wrong_order_sfx.play()
+	
 func _on_left_angry(slot: int, _order_id: String) -> void:
 	score = max(score - angry_penalty, 0)
 	_update_score()
