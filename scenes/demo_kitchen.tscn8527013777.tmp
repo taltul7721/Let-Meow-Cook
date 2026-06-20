@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://p755bydgjbsq"]
+[gd_scene load_steps=52 format=3 uid="uid://p755bydgjbsq"]
 
 [ext_resource type="Script" uid="uid://c8u6qry7jssp8" path="res://scenes/demo_kitchen.gd" id="1_demo"]
 [ext_resource type="Script" uid="uid://bflga4qre5y4d" path="res://scripts/interaction/selectable_source.gd" id="2_source"]
@@ -15,10 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://dp3neg1ipn3nt" path="res://assets/sprite/BackgroundBar.png" id="10_bar"]
 [ext_resource type="Texture2D" uid="uid://r4gmhfowsjml" path="res://assets/sprite/dish/food_atlas.png" id="10_so1dg"]
 [ext_resource type="Texture2D" uid="uid://gcv3prl81eb7" path="res://assets/ui/Timer.png" id="11_score"]
-[ext_resource type="Texture2D" uid="uid://bhxfmpbb3lsa" path="res://assets/ui/coin.png" id="12_drymw"]
 [ext_resource type="Script" uid="uid://dply02fl52166" path="res://scripts/gameplay/laser_hazard.gd" id="12_laser"]
 [ext_resource type="Script" uid="uid://6q25hbvfssx4" path="res://scripts/gameplay/run_timer.gd" id="13_timer"]
-[ext_resource type="Texture2D" uid="uid://clacp8pyvts7w" path="res://assets/ui/money.png" id="14_yhfia"]
 [ext_resource type="Script" uid="uid://byvnwk781nbdc" path="res://scenes/button.gd" id="18_so1dg"]
 [ext_resource type="Script" uid="uid://4313rgwu0um5" path="res://scenes/button_2.gd" id="19_f2484"]
 [ext_resource type="AudioStream" uid="uid://mkp65e3nvm0r" path="res://sounds/sfx/Click.ogg" id="20_23ual"]
@@ -34,9 +32,6 @@
 [ext_resource type="AudioStream" uid="uid://cnhoidl2lsq5c" path="res://sounds/sfx/Fish.ogg" id="30_e6o3j"]
 [ext_resource type="Shader" path="res://shaders/grayscale.gdshader" id="31_oaa4x"]
 [ext_resource type="Script" uid="uid://55e3352bqm2e" path="res://scenes/laser.gd" id="32_o1fvq"]
-[ext_resource type="Script" uid="uid://diribjwhr7ixu" path="res://scenes/audio_stream_player.gd" id="32_x2gjy"]
-[ext_resource type="AudioStream" uid="uid://goy01b272u0e" path="res://sounds/music/background_music.ogg" id="33_3e6cg"]
-[ext_resource type="AudioStream" uid="uid://0stp2lf8jooo" path="res://sounds/music/lazer_music.ogg" id="34_yhfia"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_btev0"]
 shader = ExtResource("4_a5l1t")
@@ -101,76 +96,27 @@ region = Rect2(0, 0, 180, 120)
 atlas = ExtResource("10_so1dg")
 region = Rect2(0, 0, 180, 120)
 
-[sub_resource type="Animation" id="Animation_drymw"]
-resource_name = "move up and fade"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(23, -168), Vector2(23, -190)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.75, 1.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_jnr4t"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(23, -168)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5su87"]
-_data = {
-&"RESET": SubResource("Animation_jnr4t"),
-&"move up and fade": SubResource("Animation_drymw")
-}
-
 [sub_resource type="Animation" id="Animation_dmjcl"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Interactables/Fridge/FridgeBubble/FridgeFish:material:shader_parameter/flash_percent")
+tracks/0/path = NodePath("FridgeTexture:material:shader_parameter/flash_percent")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FridgeBubble/FridgeFish:material:shader_parameter/flash_percent")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -184,7 +130,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Interactables/Fridge/FridgeBubble/FridgeFish:material:shader_parameter/flash_percent")
+tracks/0/path = NodePath("FridgeBubble/FridgeFish:material:shader_parameter/flash_percent")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -201,7 +147,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Interactables/Fridge/FridgeTexture:material:shader_parameter/flash_percent")
+tracks/0/path = NodePath("FridgeTexture:material:shader_parameter/flash_percent")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -225,10 +171,7 @@ shader_parameter/g_multiplier = 0.7152
 shader_parameter/b_multiplier = 0.0722
 shader_parameter/easing_threshold = 0.0031308
 shader_parameter/pre_threshold_multiplier = 12.92
-shader_parameter/post_threshold_multiplier_low = 1.055
-shader_parameter/post_threshold_multiplier_high = 1.055
-shader_parameter/post_threshold_add = 0.055
-shader_parameter/post_threshold_exponent = 0.416667
+shader_parameter/post_threshold_multiplier = 1.055
 shader_parameter/ease = 1.0
 
 [node name="DemoKitchen" type="Control"]
@@ -629,26 +572,6 @@ offset_bottom = 4.0
 mouse_filter = 2
 color = Color(1, 0.35, 0.75, 0.85)
 
-[node name="Sprite2D" type="Sprite2D" parent="CustomerStand1"]
-modulate = Color(1, 1, 1, 0)
-position = Vector2(23, -168)
-scale = Vector2(0.165, 0.165)
-texture = ExtResource("12_drymw")
-
-[node name="Label" type="Label" parent="CustomerStand1/Sprite2D"]
-offset_left = 79.0
-offset_top = -61.0
-offset_right = 315.0
-offset_bottom = 52.0
-theme_override_font_sizes/font_size = 93
-text = "+50"
-horizontal_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CustomerStand1/Sprite2D"]
-libraries = {
-&"": SubResource("AnimationLibrary_5su87")
-}
-
 [node name="CustomerStand2" type="Control" parent="."]
 unique_name_in_owner = true
 anchors_preset = 0
@@ -659,32 +582,11 @@ offset_bottom = 349.0
 mouse_filter = 2
 
 [node name="EditorMarker" type="ColorRect" parent="CustomerStand2"]
-visible = false
 layout_mode = 0
 offset_right = 120.0
 offset_bottom = 4.0
 mouse_filter = 2
 color = Color(1, 0.35, 0.75, 0.85)
-
-[node name="Sprite2D" type="Sprite2D" parent="CustomerStand2"]
-modulate = Color(1, 1, 1, 0)
-position = Vector2(23, -168)
-scale = Vector2(0.165, 0.165)
-texture = ExtResource("12_drymw")
-
-[node name="Label" type="Label" parent="CustomerStand2/Sprite2D"]
-offset_left = 79.0
-offset_top = -61.0
-offset_right = 315.0
-offset_bottom = 52.0
-theme_override_font_sizes/font_size = 93
-text = "+50"
-horizontal_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CustomerStand2/Sprite2D"]
-libraries = {
-&"": SubResource("AnimationLibrary_5su87")
-}
 
 [node name="CustomerStand3" type="Control" parent="."]
 unique_name_in_owner = true
@@ -701,26 +603,6 @@ offset_right = 120.0
 offset_bottom = 4.0
 mouse_filter = 2
 color = Color(1, 0.35, 0.75, 0.85)
-
-[node name="Sprite2D" type="Sprite2D" parent="CustomerStand3"]
-modulate = Color(1, 1, 1, 0)
-position = Vector2(23, -168)
-scale = Vector2(0.165, 0.165)
-texture = ExtResource("12_drymw")
-
-[node name="Label" type="Label" parent="CustomerStand3/Sprite2D"]
-offset_left = 79.0
-offset_top = -61.0
-offset_right = 315.0
-offset_bottom = 52.0
-theme_override_font_sizes/font_size = 93
-text = "+50"
-horizontal_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CustomerStand3/Sprite2D"]
-libraries = {
-&"": SubResource("AnimationLibrary_5su87")
-}
 
 [node name="CounterBarFront" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -787,7 +669,7 @@ offset_top = 8.0
 offset_right = 1142.0
 offset_bottom = 83.0
 mouse_filter = 2
-texture = ExtResource("14_yhfia")
+texture = ExtResource("11_score")
 expand_mode = 1
 stretch_mode = 5
 
@@ -823,25 +705,16 @@ text = "LASER!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LaserBeam" type="Node2D" parent="."]
-unique_name_in_owner = true
-z_index = 68
-script = ExtResource("32_o1fvq")
-color = Color(1, 0.21, 0.315333, 0.901961)
-radius = 15.0
-
 [node name="LaserHazard" type="Node" parent="." node_paths=PackedStringArray("beam")]
 script = ExtResource("12_laser")
 beam = NodePath("../LaserBeam")
-interval_min = 7.5
-interval_max = 13.5
 
 [node name="RunTimer" type="Node" parent="." node_paths=PackedStringArray("timer_label")]
 script = ExtResource("13_timer")
 timer_label = NodePath("../TimerPanel/TimerValue")
 start_seconds = 120.0
 
-[node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent", "score_label", "correct_order_sfx", "wrong_order_sfx", "enter_sfx", "stands_success_animation")]
+[node name="CustomerSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent", "score_label", "correct_order_sfx", "wrong_order_sfx", "enter_sfx")]
 unique_name_in_owner = true
 script = ExtResource("6_spawner")
 spawn_parent = NodePath("../CustomerLayer")
@@ -850,10 +723,10 @@ score_label = NodePath("../ScorePanel/ScoreValue")
 correct_order_sfx = NodePath("../SFX/CustomerCorrectOrder")
 wrong_order_sfx = NodePath("../SFX/CustomerWrongOrder")
 enter_sfx = NodePath("../SFX/Enter")
-stands_success_animation = [NodePath("../CustomerStand1/Sprite2D/AnimationPlayer"), NodePath("../CustomerStand2/Sprite2D/AnimationPlayer"), NodePath("../CustomerStand3/Sprite2D/AnimationPlayer")]
 
 [node name="HintFlashAnimator" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
+root_node = NodePath("../../../../../../../../../../../../../../../../../../../../../../Node/Fridge")
 libraries = {
 &"": SubResource("AnimationLibrary_dmjcl")
 }
@@ -911,11 +784,6 @@ stream = ExtResource("29_3e6cg")
 [node name="FishSelected" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("30_e6o3j")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="SFX"]
-script = ExtResource("32_x2gjy")
-background = ExtResource("33_3e6cg")
-laser_background = ExtResource("34_yhfia")
-
 [node name="HunterVision" type="CanvasLayer" parent="."]
 visible = false
 
@@ -927,7 +795,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CoinPopup" type="Node" parent="."]
+[node name="LaserBeam" type="Node2D" parent="."]
+unique_name_in_owner = true
+z_index = 38
+script = ExtResource("32_o1fvq")
+color = Color(1, 0.25098, 0.34902, 0.819608)
+radius = 5.0
 
 [connection signal="ready" from="Interactables/Fridge" to="Interactables/Fridge" method="_on_ready"]
 [connection signal="pressed" from="Interactables/Fridge/FridgeTexture" to="Interactables/Fridge" method="_on_fridge_pressed"]
@@ -940,7 +813,5 @@ grow_vertical = 2
 [connection signal="visibility_changed" from="Interactables/CuttingBoard/CutPickup" to="Interactables/CuttingBoard/CutPickup" method="_on_visibility_changed"]
 [connection signal="pressed" from="Interactables/Plate/Plate1" to="Interactables/Plate/Plate1" method="_on_pressed"]
 [connection signal="pressed" from="Interactables/Plate 2/Plate2" to="Interactables/Plate 2/Plate2" method="_on_pressed"]
-[connection signal="laser_finished" from="LaserHazard" to="SFX/AudioStreamPlayer" method="_on_laser_hazard_laser_finished"]
-[connection signal="laser_started" from="LaserHazard" to="SFX/AudioStreamPlayer" method="_on_laser_hazard_laser_started"]
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
 [connection signal="pressed" from="Button2" to="Button2" method="_on_pressed"]

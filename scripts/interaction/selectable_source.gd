@@ -17,9 +17,11 @@ func _on_visibility_changed() -> void:
 		(texture_normal as AtlasTexture).region.position = owner.atlas_coordinates[item_id + " " + item_state]
 		%HintFlashAnimator.stop()
 		%HintFlashAnimator.play(flash_animation)
-		open_sfx.play()
+		if open_sfx:
+			open_sfx.play()
 	else:
-		close_sfx.play()
+		if close_sfx:
+			close_sfx.play()
 
 
 func _on_pressed() -> void:

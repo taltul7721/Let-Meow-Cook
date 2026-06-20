@@ -12,6 +12,7 @@ extends Node
 @export var correct_order_sfx : AudioStreamPlayer2D
 @export var wrong_order_sfx : AudioStreamPlayer2D
 @export var enter_sfx : AudioStreamPlayer2D
+@export var stands_success_animation : Array[AnimationPlayer]
 
 const STAND_NAMES := ["CustomerStand1", "CustomerStand2", "CustomerStand3"]
 const ORDER_OPTIONS := ["sushi", "cooked_fish"]
@@ -176,6 +177,7 @@ func _on_served_correct(_order_id: String) -> void:
 			_customers[i] = null
 			slot = i
 			break
+	stands_success_animation[slot].play("move up and fade")
 	await get_tree().create_timer(_random_respawn_delay()).timeout
 	if is_inside_tree():
 		_spawn_at_slot(slot)

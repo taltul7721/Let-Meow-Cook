@@ -4,7 +4,10 @@ uniform float g_multiplier = 0.7152;
 uniform float b_multiplier = 0.0722;
 uniform float easing_threshold = 0.0031308;
 uniform float pre_threshold_multiplier = 12.92;
-uniform float post_threshold_multiplier = 1.055;
+uniform float post_threshold_multiplier_low = 1.055;
+uniform float post_threshold_multiplier_high = 1.055;
+uniform float post_threshold_add = 0.055;
+uniform float post_threshold_exponent = 0.4166666667;
 uniform float ease = 1;
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
@@ -15,6 +18,7 @@ void fragment() {
 		COLOR = mix(original, vec4(pre_threshold_multiplier * linear), ease);
 	}
 	else {
-		COLOR = mix(original, vec4(post_threshold_multiplier * pow(linear, 1.0/2.4) - 0.055), ease);
+		float post_threshold_multiplier = mix (post_threshold_multiplier_low, post_threshold_multiplier_high, pow(0.5 - linear, 2));
+		COLOR = mix(original, vec4(post_threshold_multiplier * pow(linear, post_threshold_exponent) - post_threshold_add), ease);
 	}
 }
