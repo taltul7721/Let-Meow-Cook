@@ -43,10 +43,14 @@ static func for_state(state: String) -> Texture2D:
 			return raw()
 		"cut":
 			return cut()
-		"cooked":
+		"cooked", "overcooked":
 			return cooked()
 		_:
 			return null
+
+
+static func is_edible(state: String) -> bool:
+	return state in ["cut", "cooked"]
 
 
 static func for_order(order_id: String) -> Texture2D:

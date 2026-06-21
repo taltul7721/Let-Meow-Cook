@@ -18,10 +18,15 @@ func _ready() -> void:
 		_highlight_node = get_node("Highlight") as CanvasItem
 		_highlight_node.visible = false
 		_highlight_node.modulate = Color(1, 1, 1, 0)
-	GameManager.selection_changed.connect(_on_selection_changed)
-	GameManager.selection_cleared.connect(_on_selection_cleared)
-	pressed.connect(_on_pressed)
+	_connect_once(GameManager.selection_changed, _on_selection_changed)
+	_connect_once(GameManager.selection_cleared, _on_selection_cleared)
+	_connect_once(pressed, _on_pressed)
 	_update_destination_hint()
+
+
+func _connect_once(sig: Signal, callable: Callable) -> void:
+	if not sig.is_connected(callable):
+		sig.connect(callable)
 
 
 func is_station_occupied() -> bool:
@@ -58,6 +63,7 @@ func _clear_placement_source(source: Node) -> void:
 
 
 func flash_invalid() -> void:
+	var base := modulate
 	if _highlight_node:
 		var old := _highlight_node.modulate
 		_highlight_node.visible = true
@@ -66,6 +72,7 @@ func flash_invalid() -> void:
 		tween_h.tween_property(_highlight_node, "modulate", old, 0.12)
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", invalid_flash_color, 0.08)
+	tween.tween_property(self, "modulate", base, 0.12)
 	await tween.finished
 	_update_destination_hint()
 

@@ -61,3 +61,21 @@ static func center_in_control(item: Control, container: Control) -> void:
 	if item == null or container == null:
 		return
 	item.position = container.size * 0.5 - item.size * 0.5
+
+
+static func layout_ghost_on_anchor(
+	ghost: TextureRect,
+	anchor: Control,
+	display_size: Vector2,
+	y_offset: float,
+	alpha: float
+) -> void:
+	if ghost == null or anchor == null:
+		return
+	ghost.custom_minimum_size = display_size
+	ghost.size = display_size
+	ghost.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ghost.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	center_on_control(ghost, anchor)
+	ghost.position.y += y_offset
+	ghost.self_modulate = Color(1.0, 1.0, 1.0, alpha)

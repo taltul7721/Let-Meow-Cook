@@ -11,13 +11,15 @@ config_version=5
 [application]
 
 config/name="Let Meow Cook"
-run/main_scene="res://scenes/demo_kitchen.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://scripts/autoload/game_manager.gd"
+MusicManager="*res://scripts/autoload/music_manager.gd"
+UiSfx="*res://scripts/autoload/ui_sfx.gd"
 
 [display]
 

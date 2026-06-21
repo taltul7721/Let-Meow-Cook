@@ -13,12 +13,17 @@ const HIGHLIGHT_SELECT := Color(1.4, 1.35, 0.7, 1.0)
 
 var _rest_position: Vector2 = Vector2.ZERO
 var _respawning: bool = false
+var _respawn_generation: int = 0
 var _food_outline: ShaderMaterial
 var _plate_outline: ShaderMaterial
 
 
 func _ready() -> void:
 	super._ready()
+	if accepted_item_ids.is_empty():
+		accepted_item_ids = ["fish"]
+	if accepted_states.is_empty():
+		accepted_states = ["cut", "cooked"]
 	copy_source_texture = false
 	texture_normal = null
 	modulate = Color(1, 1, 1, 0.01)
@@ -26,8 +31,7 @@ func _ready() -> void:
 	if plate_visual == null and has_node("../PlateVisual"):
 		plate_visual = get_node("../PlateVisual") as TextureRect
 	_clear_food_visual()
-	GameManager.selection_changed.connect(_on_selection_changed)
-	GameManager.selection_cleared.connect(_on_selection_cleared)
+	_restore_plate_visual()
 
 
 func bind_visuals(visual: TextureRect, food: TextureRect) -> void:
@@ -66,6 +70,8 @@ func can_accept(item_data: Dictionary) -> bool:
 		return false
 	if GameManager.selected_source is ServingPlate:
 		return false
+	if not FishAssets.is_edible(item_data.get("item_state", "")):
+		return false
 	return super.can_accept(item_data)
 
 
@@ -95,19 +101,76 @@ func clear_item() -> void:
 	set_highlighted(false)
 
 
+func reset_after_trash() -> void:
+	_cancel_respawn()
+	clear_item()
+	_restore_plate_visual()
+
+
 func consume_for_serve() -> void:
 	if _respawning or not _occupied:
 		return
+	_respawn_generation += 1
+	var generation := _respawn_generation
+	_run_respawn_sequence(generation)
+
+
+func _cancel_respawn() -> void:
+	_respawn_generation += 1
+	_respawning = false
+	disabled = false
+
+
+func _run_respawn_sequence(generation: int) -> void:
 	if GameManager.selected_source == self:
 		GameManager.clear_selection()
 	_respawning = true
 	disabled = true
-	_fade_out_plate()
-	await get_tree().create_timer(plate_respawn_delay).timeout
+	var prior_mode := process_mode
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	await _fade_out_plate()
+	if not _respawn_still_valid(generation):
+		_finish_respawn(prior_mode)
+		return
+
+	await _pause_safe_delay(plate_respawn_delay)
+	if not _respawn_still_valid(generation):
+		_finish_respawn(prior_mode)
+		return
+
 	clear_item()
 	await _respawn_plate_animation()
+	if not _respawn_still_valid(generation):
+		_finish_respawn(prior_mode)
+		return
+
+	_finish_respawn(prior_mode)
+
+
+func _respawn_still_valid(generation: int) -> bool:
+	return generation == _respawn_generation and is_inside_tree()
+
+
+func _finish_respawn(prior_mode: Node.ProcessMode) -> void:
 	_respawning = false
 	disabled = false
+	process_mode = prior_mode
+	_restore_plate_visual()
+
+
+func _restore_plate_visual() -> void:
+	if plate_visual:
+		plate_visual.visible = true
+		plate_visual.modulate = Color.WHITE
+		plate_visual.scale = Vector2.ONE
+	if food_visual:
+		food_visual.modulate = Color.WHITE
+
+
+func _pause_safe_delay(seconds: float) -> void:
+	var timer := get_tree().create_timer(seconds, true)
+	await timer.timeout
 
 
 func set_highlighted(active: bool) -> void:
@@ -143,6 +206,7 @@ func _on_pressed() -> void:
 		GameManager.select(self)
 	sfx.play()
 
+
 func _show_food_on_plate(tex: Texture2D) -> void:
 	if food_visual == null or tex == null:
 		return
@@ -165,6 +229,7 @@ func _clear_food_visual() -> void:
 
 func _fade_out_plate() -> void:
 	var tween := create_tween().set_parallel(true)
+	tween.set_pause_mode(Tween.TweenPauseMode.TWEEN_PAUSE_PROCESS)
 	if plate_visual:
 		tween.tween_property(plate_visual, "modulate:a", 0.0, 0.32)
 	if food_visual and food_visual.visible:
@@ -175,7 +240,8 @@ func _fade_out_plate() -> void:
 func _respawn_plate_animation() -> void:
 	if plate_visual:
 		plate_visual.modulate = Color.WHITE
+		plate_visual.visible = true
 		Juice.elastic_pop_in(plate_visual, KitchenLayout.JUICE_SPRING_DURATION)
 	if food_visual:
 		food_visual.modulate = Color.WHITE
-	await get_tree().create_timer(KitchenLayout.JUICE_SPRING_DURATION).timeout
+	await _pause_safe_delay(KitchenLayout.JUICE_SPRING_DURATION)

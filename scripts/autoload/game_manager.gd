@@ -56,6 +56,7 @@ func select(source: Node) -> void:
 		clear_selection()
 		return
 
+	UiSfx.play_click()
 	selected_source = source
 	selection_changed.emit(source)
 
@@ -78,11 +79,18 @@ func try_place(destination: Node) -> bool:
 		placement_failed.emit(selected_source, destination, "invalid_destination")
 		return false
 
+	UiSfx.play_click()
 	var item_data: Dictionary = selected_source.get_item_data()
+	var item_state: String = item_data.get("item_state", "")
+	if item_state == "overcooked":
+		placement_failed.emit(selected_source, destination, "burnt_food")
+		if destination.has_method("flash_invalid"):
+			destination.flash_invalid()
+		return false
 	if not destination.can_accept(item_data):
 		placement_failed.emit(selected_source, destination, "invalid_item_for_slot")
-
-
+		if destination.has_method("flash_invalid"):
+			destination.flash_invalid()
 		return false
 
 	var source: Node = selected_source

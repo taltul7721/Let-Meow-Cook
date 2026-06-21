@@ -75,14 +75,101 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
+[node name="BubbleItem2" type="TextureRect" parent="Bubble"]
+visible = false
+layout_mode = 0
+offset_left = 78.0
+offset_top = 24.0
+offset_right = 128.0
+offset_bottom = 58.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BubbleCheck1" type="Label" parent="Bubble"]
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 30.0
+offset_right = 64.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.18, 0.72, 0.32, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.12, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "✓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BubbleCheck2" type="Label" parent="Bubble"]
+visible = false
+layout_mode = 0
+offset_left = 96.0
+offset_top = 30.0
+offset_right = 120.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.18, 0.72, 0.32, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.12, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "✓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BubbleDish1" type="Label" parent="Bubble"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 76.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.1, 0.14, 0.22, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.92)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "Sushi"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="BubbleDish2" type="Label" parent="Bubble"]
+visible = false
+layout_mode = 0
+offset_left = 76.0
+offset_top = 56.0
+offset_right = 132.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.1, 0.14, 0.22, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.92)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "Grilled"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="VipBadge" type="Label" parent="Bubble"]
+visible = false
+layout_mode = 0
+offset_left = 36.0
+offset_top = 2.0
+offset_right = 104.0
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(1, 0.86, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.08, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "VIP"
+horizontal_alignment = 1
+
 [node name="OrderLabel" type="Label" parent="Bubble"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 58.0
 offset_right = 132.0
 offset_bottom = 76.0
-theme_override_colors/font_color = Color(0.15, 0.2, 0.3, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.1, 0.14, 0.22, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.92)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
 text = "Sushi"
 horizontal_alignment = 1
 clip_text = true
@@ -93,8 +180,10 @@ offset_left = 10.0
 offset_top = 74.0
 offset_right = 130.0
 offset_bottom = 96.0
-theme_override_colors/font_color = Color(0.35, 0.42, 0.52, 1)
-theme_override_font_sizes/font_size = 9
+theme_override_colors/font_color = Color(0.18, 0.24, 0.34, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.92)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
 text = "Fridge -> Chop -> Plate"
 horizontal_alignment = 1
 autowrap_mode = 2

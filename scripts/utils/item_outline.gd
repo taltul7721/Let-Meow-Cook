@@ -6,6 +6,7 @@ const OUTLINE_SHADER := preload("res://shaders/outline_highlight.gdshader")
 
 const DEFAULT_COLOR := Color(1.0, 0.92, 0.25, 1.0)
 const DEFAULT_WIDTH := 2.5
+const VIP_COLOR := Color(1.0, 0.82, 0.2, 1.0)
 const SERVE_COLOR := Color(0.45, 1.0, 0.55, 1.0)
 
 

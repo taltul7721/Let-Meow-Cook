@@ -1,0 +1,222 @@
+[gd_scene load_steps=7 format=3 uid="uid://c4mainmenu7k2"]
+
+[ext_resource type="Script" uid="uid://n77gxo83t6bj" path="res://scenes/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" uid="uid://joxq2iiwyskj" path="res://assets/sprite/background.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://cufx6wfxdh3un" path="res://assets/logo/letmeowcookLogo.png" id="3_logo_base"]
+[ext_resource type="Texture2D" uid="uid://ohfltxr4fuae" path="res://assets/logo/letmeowcookLogo_Cat.png" id="4_logo_cat"]
+[ext_resource type="Texture2D" uid="uid://nnsx71jyha4p" path="res://assets/logo/letmeowcookLogo_Fish_Left.png" id="5_logo_fish"]
+[ext_resource type="Texture2D" uid="uid://dwjrxthryurdy" path="res://assets/logo/letmeowcookLogo_Vegi_Right.png" id="6_logo_vegi"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.45)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.06, 0.08, 0.12, 0.25)
+
+[node name="LogoStack" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -926.0
+offset_top = -14.0
+offset_right = 927.0
+offset_bottom = 648.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="LogoBase" type="TextureRect" parent="LogoStack"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_logo_base")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LogoCat" type="TextureRect" parent="LogoStack"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_logo_cat")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LogoFishLeft" type="TextureRect" parent="LogoStack"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_logo_fish")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LogoVegiRight" type="TextureRect" parent="LogoStack"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_logo_vegi")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MenuButtons" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = 40.0
+offset_right = 140.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.1, 0.14, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "Play"
+
+[node name="CreditsButton" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.1, 0.14, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "Credits"
+
+[node name="ExitButton" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.1, 0.14, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "Exit"
+
+[node name="CreditsPanel" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="CreditsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.08, 0.72)
+
+[node name="CreditsContent" type="PanelContainer" parent="CreditsPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -160.0
+offset_right = 260.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="CreditsPanel/CreditsContent"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="CreditsPanel/CreditsContent/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="CreditsPanel/CreditsContent/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.1, 0.14, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 36
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="Names" type="Label" parent="CreditsPanel/CreditsContent/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.1, 0.14, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "Nadav Nemron — Developer
+Tal Haimovich — Tech artist"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="CreditsPanel/CreditsContent/Margin/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.1, 0.14, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "Back"
+
+[connection signal="pressed" from="MenuButtons/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="MenuButtons/CreditsButton" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="MenuButtons/ExitButton" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="CreditsPanel/CreditsContent/Margin/VBox/BackButton" to="." method="_on_credits_back_pressed"]

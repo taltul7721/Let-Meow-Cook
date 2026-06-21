@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Grill.ogg-d8db51cd3e41b44b9c6c945e1681790a.og
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

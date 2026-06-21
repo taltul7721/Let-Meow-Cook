@@ -22,6 +22,30 @@ static func elastic_pop_in(node: Control, duration: float = SPRING_DURATION) -> 
 	tween.tween_property(node, "scale", Vector2.ONE, duration)
 
 
+## Starts oversized and scales inward to 1.0 with a soft pop settle (menu logos, titles).
+static func pop_in_from_overscale(
+	node: Control,
+	start_scale: float = 1.38,
+	duration: float = 0.72,
+	fade_in: bool = true
+) -> Tween:
+	if node == null:
+		return null
+	center_pivot(node)
+	node.visible = true
+	node.scale = Vector2.ONE * start_scale
+	if fade_in:
+		node.modulate.a = 0.0
+	var tween := node.create_tween()
+	tween.set_parallel(true)
+	if fade_in:
+		tween.tween_property(node, "modulate:a", 1.0, duration * 0.45)\
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(node, "scale", Vector2.ONE, duration)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	return tween
+
+
 static func elastic_show(node: Control, duration: float = SPRING_DURATION) -> void:
 	elastic_pop_in(node, duration)
 

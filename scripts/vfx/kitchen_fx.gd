@@ -67,12 +67,71 @@ static func play_serve_sparkle(parent: Node, world_pos: Vector2) -> void:
 	timer.timeout.connect(host.queue_free)
 
 
+static func play_trash_dump(parent: Node, world_pos: Vector2) -> void:
+	if parent == null:
+		return
+	var host := Node2D.new()
+	host.name = "TrashDump"
+	host.z_index = 28
+	host.global_position = world_pos
+	parent.add_child(host)
+	var colors := [
+		Color(0.55, 0.58, 0.62, 0.85),
+		Color(0.42, 0.45, 0.5, 0.75),
+		Color(0.68, 0.7, 0.74, 0.65),
+	]
+	for i in range(5):
+		var puff := _make_puff_sprite(colors[i % colors.size()], 14.0 + float(i) * 4.0)
+		puff.position = Vector2(randf_range(-16, 16), randf_range(-8, 4))
+		host.add_child(puff)
+		_animate_falling_puff(puff, 0.34 + float(i) * 0.04)
+	var timer: SceneTreeTimer = host.get_tree().create_timer(0.6)
+	timer.timeout.connect(host.queue_free)
+
+
 static func stop_grill_smoke(particles: CPUParticles2D) -> void:
 	if particles == null or not is_instance_valid(particles):
 		return
 	particles.emitting = false
 	var timer: SceneTreeTimer = particles.get_tree().create_timer(1.6)
 	timer.timeout.connect(particles.queue_free)
+
+
+static func configure_burn_flames(particles: CPUParticles2D, layer: int = 0) -> void:
+	if particles == null:
+		return
+	var width := 14.0 + float(layer) * 6.0
+	particles.texture = make_soft_particle_texture(7)
+	particles.amount = 9 + layer * 3
+	particles.lifetime = 0.38 + float(layer) * 0.04
+	particles.preprocess = 0.12
+	particles.explosiveness = 0.05
+	particles.randomness = 0.35
+	particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	particles.emission_rect_extents = Vector2(width, 5.0)
+	particles.direction = Vector2(0, -1)
+	particles.spread = 16.0 + float(layer) * 4.0
+	particles.gravity = Vector2(0, -22)
+	particles.initial_velocity_min = 6.0
+	particles.initial_velocity_max = 16.0 + float(layer) * 2.0
+	particles.scale_amount_min = 0.18
+	particles.scale_amount_max = 0.42 + float(layer) * 0.05
+	particles.color = Color(1, 0.58 + float(layer) * 0.04, 0.1, 0.8)
+	particles.color_ramp = null
+
+
+static func make_soft_particle_texture(radius: float) -> ImageTexture:
+	var size := int(radius * 2.0)
+	var img := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	var center := Vector2(radius, radius)
+	for y in size:
+		for x in size:
+			var d := Vector2(x, y).distance_to(center) / radius
+			if d <= 1.0:
+				var a := pow(1.0 - d, 1.25)
+				img.set_pixel(x, y, Color(1, 1, 1, a))
+	return ImageTexture.create_from_image(img)
 
 
 static func _make_puff_sprite(color: Color, radius: float) -> Sprite2D:
@@ -102,3 +161,12 @@ static func _animate_puff(puff: Sprite2D, duration: float) -> void:
 	tween.tween_property(puff, "scale", Vector2(1.35, 1.35), duration)
 	tween.tween_property(puff, "modulate:a", 0.0, duration)
 
+
+static func _animate_falling_puff(puff: Sprite2D, duration: float) -> void:
+	var tween := puff.create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.set_ease(Tween.EASE_IN)
+	tween.tween_property(puff, "position:y", puff.position.y + 28.0, duration)
+	tween.tween_property(puff, "scale", Vector2(0.9, 0.9), duration)
+	tween.tween_property(puff, "modulate:a", 0.0, duration)

@@ -1,15 +1,29 @@
 extends AudioStreamPlayer
 
-@export var background : AudioStream
-@export var laser_background : AudioStream
+@export var background: AudioStream
+@export var laser_background: AudioStream
+
 
 func _ready() -> void:
-	stream = background
+	_start_background_music()
+
+
+func _start_background_music() -> void:
+	_play_stream(background)
+
+
+func _play_stream(next: AudioStream) -> void:
+	if next == null:
+		return
+	stream = next
+	if next is AudioStreamOggVorbis:
+		(next as AudioStreamOggVorbis).loop = true
+	play()
 
 
 func _on_laser_hazard_laser_started() -> void:
-	stream = laser_background
+	_play_stream(laser_background)
 
 
 func _on_laser_hazard_laser_finished() -> void:
-	stream = background
+	_play_stream(background)
